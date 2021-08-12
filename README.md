@@ -34,6 +34,7 @@ Custom aliases
 - `sudo raspi-config`
 
 1. System Options
+   - S2 Audio: 3.5mm jack
    - S3 Password: ChangeMe
    - S4 Hostname: xcarlink
 5. Localisation Options
@@ -131,6 +132,8 @@ sudo apt update && sudo apt install pulseaudio pulseaudio-module-bluetooth ofono
 sudo cp /etc/pulse/client.conf /etc/pulse/client.conf.org
 sudo vim /etc/pulse/client.conf
 L25 autospawn = no
+mkdir -p $HOME/.config/pulse
+cp /etc/pulse/client.conf $HOME/.config/pulse/client.conf
 ```
 3. Start Pulseaudio on boot
 ```sh
@@ -168,10 +171,11 @@ sudo service dbus status
 ```
 8. Enable system mode on boot
 ```sh
+sudo systemctl --user stop pulseaudio.service pulseaudio.socket
+sudo systemctl --global disable pulseaudio.service pulseaudio.socket
 sudo systemctl enable bluetooth
 sudo systemctl enable ofono
 sudo systemctl enable pulseaudio
-sudo systemctl --global disable pulseaudio.service pulseaudio.socket
 sudo reboot
 ```
 9. Check that the Bluetooth module is loaded
@@ -184,7 +188,7 @@ pactl list modules short | grep -i bluetooth
 1. Add the user the server is running
 ```sh
 sudo adduser root pulse-access
-sudo adduser pi pulse-access
+sudo adduser pulse pulse-access
 ```
 2. Restart and check the logs
 ```sh
@@ -346,6 +350,7 @@ sudo service lighttpd force-reload
 sudo visudo
 # Add the following line below "pi ALL etc." and exit the visudo editor:
 www-data ALL = NOPASSWD: /sbin/shutdown
+(^s, ^x)
 ```
 3. Create index.html
 ```sh
@@ -362,4 +367,33 @@ sudo vim /var/www/html/shutdown.php
 5. Test
 ```sh
 (host) curl xcarlink.local/shutdown.php
+```
+
+---
+
+## Debug
+
+1. Services
+```sh
+sudo service owntone status
+sudo service pulseaudio status
+sudo service shairport-sync status
+sudo service dbus status
+sudo service dnsmasq status
+sudo service hostapd status
+```
+2. Logs
+```sh
+tail -f /var/log/owntone.log
+journalctl -u pulseaudio.service
+```
+3. Check that no pulseaudio in user mode is running
+```sh
+sudo ps -aux | grep pulse
+```
+4. Pulseaudio in debug mode
+```sh
+sudo service pulseaudio stop
+sudo pulseaudio -vvvv
+sudo service pulseaudio restart
 ```
