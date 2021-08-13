@@ -1,7 +1,22 @@
 # XCarlink
 Music server in a car
 
-# XCarlink
+1. [Install Raspberry Pi OS Lite](#install-raspberry-pi-os-lite)
+2. [Config](#config)
+3. [Test a MP3 sound sample](#test-a-mp3-sound-sample)
+4. [OwnTone](#owntone)
+	*	[How to install](#how-to-install)
+	*	[Getting started](#getting-started)
+5. [OwnTone and Pulseaudio](#owntone-and-pulseaudio)
+	*	[Setting up Pulseaudio](#setting-up-pulseaudio)
+	*	[Setting up the server](#setting-up-the-server)
+	*	[Adding a Bluetooth device](#adding-a-bluetooth-device)
+6. [Setting up a Raspberry Pi as a routed wireless access point](#setting-up-a-raspberry-pi-as-a-routed-wireless-access-point)
+7. [AirPlay audio player](#airplay-audio-player)
+8. [Shutdown via web](#shutdown-via-web)
+9. [Debug](#debug)
+
+---
 
 ## Install Raspberry Pi OS Lite
 
@@ -397,3 +412,7 @@ sudo service pulseaudio stop
 sudo pulseaudio -vvvv
 sudo service pulseaudio restart
 ```
+
+---
+
+[:back:](README.md) [:top:](#)
